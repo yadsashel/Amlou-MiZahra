@@ -4,13 +4,18 @@ import csv, io
 from flask import Flask, render_template, flash, jsonify, request, session, redirect, url_for, send_file, make_response
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_cors import CORS
-from config import REGLOG_KEY, SECRET_KEY
+from dotenv import load_dotenv
+
+load_dotenv()
+
+REGLOG_KEY = os.environ.get('REGLOG_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 app = Flask(__name__)
 CORS(app)
 
-app.secret_key = SECRET_KEY 
+app.secret_key = SECRET_KEY
 
 @app.route('/')
 def home():
