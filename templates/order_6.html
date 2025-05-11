@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&amp;family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for ('static', filename='css/styles.css') }}">
+    <link rel="icon" href="../static/assests/logo.png">
+    <title>أملو  ذهبي كبير</title>
+</head>   
+<body>
+
+  <!-- header and navbar -->
+  <header>
+    <div class="container">
+      <div class="mainlogo"><a  class="logo" href="{{ url_for ('home') }}">أملو مي زهرة</a></div>
+      <nav>
+        <div class="menu-toggle" id="menu-toggle">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="{{ url_for ('home') }}">الرئيسية</a></li>
+          <li><a href="{{ url_for ('product') }}">منتجاتنا</a></li>
+          <li><a class="now" href="{{ url_for ('product') }}">اطلب الآن</a></li>
+        </ul>
+      </nav>
+    </div>
+</header>
+    
+<section class="order-section">
+    <div class="order-wrapper">
+      <div class="order-header">
+        <h1>طلب المنتج</h1>
+        <div class="divider"></div>
+      </div>
+  
+      <div class="order-container">
+        <div class="order-product">
+          <h2>تفاصيل المنتج</h2>
+          <img src="../static/assests/card2.png" alt="أملو عضوي" />
+          <h3>أملو  ذهبي كبير</h3>
+          <p>عبوة اقتصادية من أفخر أنواع الأملو التقليدي</p>
+  
+          <div class="order-meta">
+            <span>300 غرام</span>
+            <strong class="product-price">300 درهم</strong>
+          </div>
+  
+          <div class="order-summary">
+            <h3>ملخص الطلب</h3>
+            <div><span>السعر:</span><span>300 درهم</span></div>
+            <div><span>الكمية:</span><span>1</span></div>
+            <div class="total">
+              <strong>الإجمالي:</strong>
+              <div style="color: black; font-weight: bolder;"><br>الدفع عند التلقي</div>
+              <strong class="total-amount">300 درهم</strong>
+            </div>
+          </div>
+        </div>
+  
+        <div class="order-form">
+          <h2>معلومات الطلب</h2>
+          <form method="POST" action="{{ url_for('submit_order', product_id=6) }}">
+            <label for="customerName">الاسم الكامل*</label>
+            <input id="customerName" name="customerName" type="text" />
+  
+            <label for="phone">رقم الهاتف*</label>
+            <input id="phone" name="phone" type="tel" />
+  
+            <label for="city">المدينة*</label>
+            <input id="city" name="city" type="text" />
+  
+            <label for="address">العنوان التفصيلي*</label>
+            <input id="address" name="address" type="text" />
+  
+            <label for="quantity">الكمية</label>
+            <div class="quantity-control">
+              <button type="button">-</button>
+              <input type="number" id="quantity" name="quantity" value="1" min="1" />
+              <button type="button">+</button>
+            </div>
+  
+            <button type="submit" class="submit-button">تأكيد الطلب</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+      
+<!-- footer -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-column">
+        <h3 class="footer-title">أملو مي زهرة</h3>
+        <p class="footer-text">
+          نقدم لكم أجود أنواع الأملو المغربي التقليدي، المصنوع بحرفية وبمكونات طبيعية 100% من أجود أنواع زيت الأركان واللوز.
+        </p>
+      </div>
+      <div class="footer-column">
+        <h3 class="footer-subtitle">روابط سريعة</h3>
+        <ul class="footer-links">
+          <li><a href="/">الرئيسية</a></li>
+          <li><a href="/products">منتجاتنا</a></li>
+          <li><a href="/#about">من نحن</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3 class="footer-subtitle">تواصل معنا</h3>
+        <ul class="footer-contact">
+          <li>الهاتف: 212-5XX-XXXXXX+</li>
+          <li>البريد الإلكتروني: info@amlou-mizahra.com</li>
+          <li>العنوان: سوق الحرفيين، أكادير، المغرب</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 أملو مي زهرة - جميع الحقوق محفوظة</p>
+    </div>
+  </div>
+</footer>
+
+
+<script src="{{ url_for ('static', filename='scripts/scripts.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="أملو الأصالة - أجود أنواع أملو الأركان المغربي التقليدي الأصيل, صناعة يدوية بمكونات طبيعية 100%">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&amp;family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for ('static', filename='css/styles.css') }}">
+    <link rel="icon" href="../static/assests/logo.png">
+    <title>أملو مي زهرة< - أجود أنواع الأملو المغربي التقليدي الأصيل</title>
+</head>
+<body>
+
+    <!-- header and navbar -->
+    <header>
+        <div class="container">
+          <div class="mainlogo"><a  class="logo" href="{{ url_for ('home') }}">أملو مي زهرة</a></div>
+          <nav>
+            <div class="menu-toggle" id="menu-toggle">
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+            </div>
+            <ul class="nav-links" id="nav-links">
+              <li><a href="{{ url_for ('home') }}">الرئيسية</a></li>
+              <li><a href="{{ url_for ('product') }}">منتجاتنا</a></li>
+              <li><a class="now" href="{{ url_for ('product') }}">اطلب الآن</a></li>
+            </ul>
+          </nav>
+        </div>
+    </header>
+    
+    <!-- intro - section -->
+    <section class="intro">
+        <div class="intro__info">
+            <div class="main__intro_inf">
+               <h1>أملو مي زهرة</h1>
+               <p>أجود أنواع الأملو المغربي التقليدي الأصيل، صناعة يدوية بمكونات طبيعية 100%</p>
+            </div>
+            <div class="btn_intro">
+               <a href="{{ url_for ('product') }}" class="btn primary">تصفح منتجاتنا</a>
+               <a href="#about" class="btn secondary">تعرف علينا</a>
+            </div>
+        </div>
+    </section>
+  
+    <!-- about us - section -->
+    <section id="about" class="about">
+        <div class="about__container">
+          <div class="about__header">
+            <h2>من نحن</h2>
+            <div class="about__divider"></div>
+          </div>
+          <div class="about__content">
+            <div class="about__text">
+              <h3>قصة أملو مي زهرة</h3>
+              <p>
+                بدأت رحلة أملو مي زهرة قبل عقود من الزمن، حيث تناقلت أجيال من النساء
+                الأمازيغيات أسرار صناعة هذه الحلوى التقليدية المغربية الفريدة المصنوعة من زيت
+                الأركان واللوز والعسل.
+              </p>
+              <p>
+                نحن في أملو مي زهرة نحافظ على الطرق التقليدية في الصناعة، بدءًا من استخراج
+                زيت الأركان يدويًا إلى تحميص اللوز بالطريقة البلدية، لنقدم لكم منتجًا فريدًا
+                بطعم أصيل يعكس ثراء التراث المغربي.
+              </p>
+              <a href="{{ url_for ('product') }}" class="about__btn">اكتشف منتجاتنا</a>
+            </div>
+            <div class="about__image-wrapper">
+              <div class="about__image-outer">
+                <img src="/about.jpg" alt="صناعة الأملو التقليدية" class="about__image" />
+              </div>
+              <div class="about__badge">
+                <p class="year">منذ 1995</p>
+                <p class="slogan">نصنع الأصالة</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- why we are - section -->
+      <section class="why-amlou">
+        <div class="why-amlou__overlay"></div>
+        <div class="why-amlou__container">
+          <div class="why-amlou__header">
+            <h2>لماذا أملو مي زهرة</h2>
+            <div class="divider"></div>
+            <p>أملو ليس مجرد طعام، بل هو تراث وصحة وطعم لا يضاهى</p>
+          </div>
+      
+          <div class="why-amlou__cards">
+            <div class="card">
+              <div class="card__icon">
+                <img src="../static/assests/3321599.png" alt="صناعة تقليدية" />
+              </div>
+              <h3>صناعة تقليدية</h3>
+              <p>نتبع الطرق التقليدية الأصيلة في صناعة الأملو كما توارثناها عن الأجداد.</p>
+            </div>
+            <div class="card">
+              <div class="card__icon">
+                <img src="../static/assests/17746338.png" alt="فوائد صحية" />
+              </div>
+              <h3>فوائد صحية</h3>
+              <p>غني بالمغذيات والفيتامينات ومضادات الأكسدة ومفيد للبشرة والشعر.</p>
+            </div>
+            <div class="card">
+              <div class="card__icon">
+                <img src="../static/assests/8357230.png" alt="مكونات طبيعية" />
+              </div>
+              <h3>مكونات طبيعية</h3>
+              <p>نستخدم فقط أرقى المكونات الطبيعية 100% دون إضافات أو مواد حافظة.</p>
+            </div>
+          </div>
+      
+          <div class="why-amlou__cta">
+            <a href="{{ url_for ('product') }}" class="cta-btn">تسوق الآن</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- what our clients said? - section -->
+      <section class="testimonials">
+        <div class="testimonials__container">
+          <div class="testimonials__header">
+            <h2>ماذا يقول عملاؤنا</h2>
+            <div class="divider"></div>
+          </div>
+      
+          <div class="testimonials__grid">
+            <div class="testimonial-card">
+              <div class="quote-icon">"</div>
+              <p class="testimonial-text">
+                أفضل أملو تذوقته في حياتي! الطعم أصيل والنكهة رائعة، يذكرني بأملو جدتي.
+              </p>
+              <div class="testimonial-footer">
+                <div class="avatar"></div>
+                <div class="testimonial-info">
+                  <p class="name">سعيد العمراني</p>
+                  <p class="location">مراكش</p>
+                </div>
+              </div>
+            </div>
+      
+            <div class="testimonial-card">
+              <div class="quote-icon">"</div>
+              <p class="testimonial-text">
+                جربت العديد من أنواع الأملو لكن أملو مي زهرة له مذاق خاص. أنصح به بشدة!
+              </p>
+              <div class="testimonial-footer">
+                <div class="avatar"></div>
+                <div class="testimonial-info">
+                  <p class="name">ليلى المرابط</p>
+                  <p class="location">الرباط</p>
+                </div>
+              </div>
+            </div>
+      
+            <div class="testimonial-card">
+              <div class="quote-icon">"</div>
+              <p class="testimonial-text">
+                المكونات عالية الجودة تجعل الفرق واضحًا. سأطلب دائمًا من هنا.
+              </p>
+              <div class="testimonial-footer">
+                <div class="avatar"></div>
+                <div class="testimonial-info">
+                  <p class="name">أحمد التازي</p>
+                  <p class="location">فاس</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- footer -->
+      <footer class="footer">
+        <div class="footer-container">
+          <div class="footer-grid">
+            <div class="footer-column">
+              <h3 class="footer-title">أملو مي زهرة</h3>
+              <p class="footer-text">
+                نقدم لكم أجود أنواع الأملو المغربي التقليدي، المصنوع بحرفية وبمكونات طبيعية 100% من أجود أنواع زيت الأركان واللوز.
+              </p>
+            </div>
+            <div class="footer-column">
+              <h3 class="footer-subtitle">روابط سريعة</h3>
+              <ul class="footer-links">
+                <li><a href="/">الرئيسية</a></li>
+                <li><a href="/products">منتجاتنا</a></li>
+                <li><a href="/#about">من نحن</a></li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h3 class="footer-subtitle">تواصل معنا</h3>
+              <ul class="footer-contact">
+                <li>الهاتف: 212-5XX-XXXXXX+</li>
+                <li>البريد الإلكتروني: info@amlou-mizahra.com</li>
+                <li>العنوان: سوق الحرفيين، أكادير، المغرب</li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p>© 2025 أملو مي زهرة - جميع الحقوق محفوظة</p>
+          </div>
+        </div>
+      </footer>
+
+    <script src="{{ url_for ('static', filename='scripts/scripts.js') }}"></script>
+</body>
+</html>
