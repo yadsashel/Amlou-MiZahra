@@ -34,3 +34,42 @@ AmlouMiZahra/
 ├── app.py                        # Flask application
 ├── requirements.txt             # List of required Python packages
 ├── .gitignore                   # Git ignore file
+
+
+
+Features in Development
+Adding support for multi-language (ex:Arabic, English..).
+
+Enhancing the PDF export templates for different products.
+
+Improving admin order editing with more advanced options.
+
+Contributing
+If you wish to contribute to the project, please fork the repository, make your changes, and submit a pull request. Ensure that your code follows the project's structure and passes all tests.
+
+License
+This project is open-source and available under the MIT License.
+
+Contact
+For questions or inquiries, you can reach out at:
+Email: [yadsashel@gmail.com]
+
+Thank you for using Amlou MiZahra!
+
+markdown
+Copy
+Edit
+
+### Key Sections:
+
+1. **Introduction & Features**: A summary of what the project does and its key features.
+2. **Project Structure**: A list of the main folders and files in the project.
+3. **Installation**: Clear steps to get the project up and running locally.
+4. **Contributing**: Instructions for contributing to the project.
+5. **License & Contact**: License details and a way to contact you for more information.
+
+### Next Steps:
+- Replace placeholders like `yourusername` and `youremail@example.com` with your actual GitHub username and contact email.
+- Ensure you have a `LICENSE` file (you can use the MIT license or another open-source license of your choice).
+
+Let me know if you need any further modifications!

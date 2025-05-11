@@ -221,5 +221,9 @@ def order_5():
 def order_6():
     return render_template('order_6.html')
 
+@app.route('/ping')
+def ping():
+    return "pong", 200
+
 if __name__ == "__main__":
     app.run(debug=True)
