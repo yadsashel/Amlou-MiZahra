@@ -28,7 +28,7 @@
       </nav>
     </div>
 </header>
-    
+  
 
 <!-- Flash Messages -->
 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -44,18 +44,32 @@
 {% endwith %}
 
 
-<form method="POST">
-    <label for="username">اسم المستخدم*</label>
-    <input type="text" id="username" name="username" required />
+<section class="orders-section">
+  <h2 class="vws">📦 الطلبات</h2>
+  <div class="orders-table-wrapper">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>البيانات</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in orders %}
+        <tr>
+          <td>{{ row }}</td>
+          <td><a href="{{ url_for('delete_order', index=loop.index0) }}" class="delete-btn">🗑️</a></td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="2">لا توجد طلبات حالياً.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
 
-    <label for="password">كلمة المرور*</label>
-    <input type="password" id="password" name="password" required />
-
-    <label for="secret">رمز التسجيل*</label>
-    <input type="text" id="secret" name="secret" required />
-
-    <button type="submit">تسجيل الدخول</button>
-</form>
 
       
 <!-- footer -->

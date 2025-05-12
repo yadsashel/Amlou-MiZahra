@@ -1,10 +1,11 @@
 import os
 import sys
 import csv, io
-from flask import Flask, render_template, flash, jsonify, request, session, redirect, url_for, send_file, make_response
+from flask import Flask, render_template, flash, jsonify, request, session, redirect, url_for, send_file, make_response, abort
 from werkzeug.security import check_password_hash, generate_password_hash
-from flask_cors import CORS
 from dotenv import load_dotenv
+from functools import wraps
+from flask_cors import CORS
 
 load_dotenv()
 
@@ -85,6 +86,31 @@ def login():
     return render_template("login.html")
 
 
+# Decorator to check if the user is logged in
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "username" not in session:
+            return abort(404)  # Show 404 page if not logged in
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+# Protect admin route
+@app.route("/admin")
+@login_required
+def admin():
+    orders = []
+    if os.path.exists("record.csv"):
+        with open("record.csv", "r", newline="", encoding="utf-8") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row:
+                    orders.append(row)
+    return render_template("admin.html", orders=orders)
+
+
+
 @app.route('/update-order', methods=['POST'])
 def update_order():
     try:
@@ -127,7 +153,6 @@ def update_order():
     return redirect(url_for("admin"))
 
 
-
 @app.route('/export_csv', methods=['POST'])
 def export_csv():
     with open('record.csv', newline='', encoding='utf-8') as csvfile:
@@ -160,18 +185,6 @@ def export_csv():
     return output
 
 
-@app.route("/admin")
-def admin():
-    orders = []
-    if os.path.exists("record.csv"):
-        with open("record.csv", "r", newline="", encoding="utf-8") as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if row:
-                    orders.append(row)
-    return render_template("admin.html", orders=orders)
-
-
 @app.route('/submit_order/<int:product_id>', methods=['POST'])
 def submit_order(product_id):
     name = request.form.get("customerName", "").strip()
@@ -202,6 +215,58 @@ def submit_order(product_id):
     flash("✅ تم إرسال طلبك بنجاح، سنتواصل معك قريباً", "success")
     return redirect(url_for("product"))
 
+
+# Protect view-workers route
+@app.route('/view-workers')
+@login_required
+def view_workers():
+    workers = []
+    if os.path.exists('users.csv'):
+        with open('users.csv', newline='', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            workers = list(reader)
+    return render_template('view_workers.html', workers=workers)
+
+
+# Protect view-orders route
+@app.route('/view-orders')
+@login_required
+def view_orders():
+    orders = []
+    if os.path.exists('record.csv'):
+        with open('record.csv', newline='', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            orders = list(reader)
+    return render_template('view_orders.html', orders=orders)
+
+
+@app.route('/delete-worker/<int:index>')
+@login_required
+def delete_worker(index):
+    if os.path.exists('users.csv'):
+        with open('users.csv', newline='', encoding='utf-8') as f:
+            rows = list(csv.reader(f))
+        if 0 <= index < len(rows):
+            del rows[index]
+            with open('users.csv', 'w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                writer.writerows(rows)
+    return redirect(url_for('view_workers'))
+
+
+@app.route('/delete-order/<int:index>')
+@login_required
+def delete_order(index):
+    if os.path.exists('record.csv'):
+        with open('record.csv', newline='', encoding='utf-8') as f:
+            rows = list(csv.reader(f))
+        if 0 <= index < len(rows):
+            del rows[index]
+            with open('record.csv', 'w', newline='', encoding='utf-8') as f:
+                writer = csv.writer(f)
+                writer.writerows(rows)
+    return redirect(url_for('view_orders'))
+
 @app.route('/order_1')
 def order_1():
     return render_template('order_1.html')
@@ -231,4 +296,4 @@ def ping():
     return "pong", 200
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=False)  # Ensure debug=False for production
+    app.run(debug=True)

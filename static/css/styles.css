@@ -1330,3 +1330,50 @@ form .divider span {
     margin-top: 10px;
   }
 }
+
+/* view orders/workers */
+.orders-section,
+.workers-section {
+  margin: 130px auto;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 12px;
+}
+
+.vws {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px auto;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  background: white;
+}
+
+.styled-table thead {
+  background-color: #f0f0f0;
+}
+
+.styled-table th, .styled-table td {
+  padding: 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.delete-btn {
+  color: red;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .styled-table th, .styled-table td {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+  }
+}

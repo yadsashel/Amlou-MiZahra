@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&amp;family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for ('static', filename='css/styles.css') }}">
     <link rel="icon" href="../static/assests/logo.png">
-    <title>التسجيل</title>
+    <title>عرض جميع الطلبات</title>
 </head>
 <body>
 
@@ -29,6 +29,7 @@
     </div>
 </header>
     
+
 <!-- Flash Messages -->
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -43,27 +44,32 @@
 {% endwith %}
 
 
-<section class="register-section">
-    <div class="register-wrapper">
-      <h1>تسجيل حساب جديد</h1>
-      <div class="divider"></div>
-      <form method="POST" action="/register">
-        <label for="fullname">الاسم الكامل</label>
-        <input type="text" id="fullname" name="fullname" required>
+<section class="workers-section">
+  <h2 class="vws">👷‍♂️ المستخدمون</h2>
+  <div class="workers-table-wrapper">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>البيانات</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in workers %}
+        <tr>
+          <td>{{ row }}</td>
+          <td><a href="{{ url_for('delete_worker', index=loop.index0) }}" class="delete-btn">🗑️</a></td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="2">لا يوجد مستخدمون.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
 
-        <label for="username">اسم المستخدم</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="password">كلمة المرور</label>
-        <input type="password" id="password" name="password" required>
-
-        <label for="invitation">رمز التسجيل السري</label>
-        <input type="text" id="secret_code" name="secret_code" required>
-
-        <button type="submit" class="submit-button">تسجيل</button>
-      </form>
-    </div>
-  </section>  
       
 <!-- footer -->
 <footer class="footer">
@@ -97,8 +103,5 @@
     </div>
   </div>
 </footer>
-
-
-<script src="{{ url_for ('static', filename='scripts/scripts.js') }}"></script>
 </body>
 </html>
