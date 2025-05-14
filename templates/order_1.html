@@ -49,27 +49,28 @@
       <div class="divider"></div>
     </div>
 
-    <div class="order-container">
+     <div class="order-container">
       <div class="order-product">
         <h2>تفاصيل المنتج</h2>
-        <img src="../static/assests/card1.png" alt="أملو عضوي" />
-        <h3>أملو تقليدي</h3>
-        <p>أملو تقليدي مصنوع من لب الأركان واللوز المحمص والعسل الطبيعي</p>
+        <img src="../static/assests/order_1.png" alt="أملو عضوي" />
+        <h3>أملو  سبايسي بالأعشاب</h3>
+        <p>
+          نكهة مغربية أصيلة بمزيج الزيتون الأسود والزعتر والثوم والكاوكاو، مثالي مع الخبز أو الجبن.
+        </p>
 
-        <!-- Unit price shown here -->
         <div class="order-meta">
-          <span>250 غرام</span>
-          <strong class="product-price">120 درهم</strong>
+          <span>500g غرام</span>
+          <strong class="product-price">170 درهم</strong>
         </div>
 
         <div class="order-summary">
           <h3>ملخص الطلب</h3>
-          <div><span>السعر:</span><span>120 درهم</span></div>
+          <div><span>السعر:</span><span>170 درهم</span></div>
           <div><span>الكمية:</span><span>1</span></div>
           <div class="total">
             <strong>الإجمالي:</strong>
             <div style="color: black; font-weight: bolder;"><br>الدفع عند التلقي</div>
-            <strong class="total-amount">120 درهم</strong>
+            <strong class="total-amount">170 درهم</strong>
           </div>
         </div>
       </div>
@@ -78,16 +79,16 @@
         <h2>معلومات الطلب</h2>
         <form method="POST" action="{{ url_for('submit_order', product_id=1) }}">
           <label for="customerName">الاسم الكامل*</label>
-          <input id="customerName" name="customerName" type="text" />
+          <input id="customerName" name="customerName" type="text"  required/>
 
           <label for="phone">رقم الهاتف*</label>
-          <input id="phone" name="phone" type="tel" />
+          <input id="phone" name="phone" type="tel" required />
 
           <label for="city">المدينة*</label>
-          <input id="city" name="city" type="text" />
+          <input id="city" name="city" type="text" required />
 
           <label for="address">العنوان التفصيلي*</label>
-          <input id="address" name="address" type="text" />
+          <input id="address" name="address" type="text" required />
 
           <label for="quantity">الكمية</label>
           <div class="quantity-control">

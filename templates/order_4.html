@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&amp;family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for ('static', filename='css/styles.css') }}">
     <link rel="icon" href="../static/assests/logo.png">
-    <title>أملو بالمكسرات</title>
+    <title>أملو بالبستاش</title>
 </head>
 <body>
 
@@ -39,23 +39,27 @@
     <div class="order-container">
       <div class="order-product">
         <h2>تفاصيل المنتج</h2>
-        <img src="../static/assests/card1.png" alt="أملو عضوي" />
-        <h3>أملو بالمكسرات</h3>
-        <p>مزيج من الأملو التقليدي مع تشكيلة مكسرات فاخرة</p>
+        <img src="../static/assests/order_4.png" alt="فاخر ومميز" />
+        <h3>أملو بالبستاش</h3>
+        <p>
+          ذوق راقٍ مع نكهة فستق فاخرة ممزوجة بعسل طبيعي وزيت أركان، مخصص لعشاق المذاق المميز. 
+        </p>
 
+        <!-- Unit Price -->
         <div class="order-meta">
-          <span>250 غرام</span>
-          <strong class="product-price">200 درهم</strong>
+          <span>500g غرام</span>
+          <strong class="product-price">230 درهم</strong>
         </div>
 
+        <!-- Summary -->
         <div class="order-summary">
           <h3>ملخص الطلب</h3>
-          <div><span>السعر:</span><span>200 درهم</span></div>
+          <div><span>السعر:</span><span>230 درهم</span></div>
           <div><span>الكمية:</span><span>1</span></div>
           <div class="total">
             <strong>الإجمالي:</strong>
             <div style="color: black; font-weight: bolder;"><br>الدفع عند التلقي</div>
-            <strong class="total-amount">200 درهم</strong>
+            <strong class="total-amount">230 درهم</strong>
           </div>
         </div>
       </div>
@@ -64,16 +68,16 @@
         <h2>معلومات الطلب</h2>
         <form method="POST" action="{{ url_for('submit_order', product_id=4) }}">
           <label for="customerName">الاسم الكامل*</label>
-          <input id="customerName" name="customerName" type="text" />
+          <input id="customerName" name="customerName" type="text" required />
 
           <label for="phone">رقم الهاتف*</label>
-          <input id="phone" name="phone" type="tel" />
+          <input id="phone" name="phone" type="tel" required />
 
           <label for="city">المدينة*</label>
-          <input id="city" name="city" type="text" />
+          <input id="city" name="city" type="text" required />
 
           <label for="address">العنوان التفصيلي*</label>
-          <input id="address" name="address" type="text" />
+          <input id="address" name="address" type="text" required />
 
           <label for="quantity">الكمية</label>
           <div class="quantity-control">

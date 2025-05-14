@@ -1,3 +1,4 @@
 record.csv
 users.csv
 .env
+FIREBASE_KEY.json

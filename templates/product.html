@@ -56,129 +56,116 @@
     <!-- Filter Buttons -->
     <div class="product-filters">
       <button data-filter="all">الكل</button>
-      <button data-filter="تقليدي">تقليدي</button>
+      <button data-filter="سبايسي ومفاجئ">سبايسي ومفاجئ</button>
       <button data-filter="فاخر">فاخر</button>
-      <button data-filter="مميز">مميز</button>
-      <button data-filter="عضوي">عضوي</button>
+      <button data-filter=">فاخر ومميز<">فاخر ومميز</button>
+      <button data-filter="طبيعي وطاقة">طبيعي وطاقة</button>
     </div>
 
     <!-- Product Cards -->
-    <div class="product-grid">
-      <!-- Card 1 -->
-      <div class="product-card" data-category="تقليدي">
-        <div class="product-image">
-          <span class="tag">تقليدي</span>
-          <img src="../static/assests/card1.png" alt="أملو تقليدي" />
-        </div>
-        <div class="product-content">
-          <h3>أملو تقليدي</h3>
-          <p>أملو تقليدي مصنوع من لب الأركان واللوز المحمص والعسل الطبيعي</p>
-          <div class="product-footer">
-            <div class="product-info">
-              <span>250 غرام</span>
-              <strong>120 درهم</strong>
-            </div>
-            <a href="{{ url_for('order_1') }}" class="order-btn">اطلب الآن</a>
-          </div>
-        </div>
-      </div>
+<div class="product-grid">
 
-      <!-- Card 2 -->
-      <div class="product-card" data-category="فاخر">
-        <div class="product-image">
-          <span class="tag">فاخر</span>
-          <img src="../static/assests/card2.png" alt="أملو باللوز" />
+  <!-- أملو الحار بالأعشاب والزيتون -->
+  <div class="product-card" data-category="سبايسي ومفاجئ">
+    <div class="product-image">
+      <span class="tag">سبايسي ومفاجئ</span>
+      <img src="../static/assests/order_1.png" alt="أملو الحار بالأعشاب والزيتون" />
+    </div>
+    <div class="product-content">
+      <h3>أملو سبايسي بالأعشاب</h3>
+      <p>
+        نكهة مغربية أصيلة بمزيج الزيتون الأسود والزعتر والثوم والكاوكاو، مثالي مع الخبز أو الجبن.
+      </p>
+      <div class="product-footer">
+        <div class="product-info">
+          <span>500 غرام</span>
+          <strong>170 درهم</strong>
         </div>
-        <div class="product-content">
-          <h3>أملو باللوز</h3>
-          <p>أملو فاخر مصنوع من زيت الأركان واللوز المحمص بنسبة عالية</p>
-          <div class="product-footer">
-            <div class="product-info">
-              <span>250 غرام</span>
-              <strong>150 درهم</strong>
-            </div>
-            <a href="{{ url_for('order_2') }}" class="order-btn">اطلب الآن</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="product-card" data-category="مميز">
-        <div class="product-image">
-          <span class="tag">مميز</span>
-          <img src="../static/assests/card3.png" alt="أملو بالعسل البلدي" />
-        </div>
-        <div class="product-content">
-          <h3>أملو بالعسل البلدي</h3>
-          <p>أملو مميز مع العسل البلدي الجبلي الصافي 100%</p>
-          <div class="product-footer">
-            <div class="product-info">
-              <span>250 غرام</span>
-              <strong>180 درهم</strong>
-            </div>
-            <a href="{{ url_for('order_3') }}" class="order-btn">اطلب الآن</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="product-card" data-category="فاخر">
-        <div class="product-image">
-          <span class="tag">فاخر</span>
-          <img src="../static/assests/card4.png" alt="أملو بالمكسرات" />
-        </div>
-        <div class="product-content">
-          <h3>أملو بالمكسرات</h3>
-          <p>مزيج من الأملو التقليدي مع تشكيلة مكسرات فاخرة</p>
-          <div class="product-footer">
-            <div class="product-info">
-              <span>250 غرام</span>
-              <strong>200 درهم</strong>
-            </div>
-            <a href="{{ url_for('order_4') }}" class="order-btn">اطلب الآن</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 5 -->
-      <div class="product-card" data-category="عضوي">
-        <div class="product-image">
-          <span class="tag">عضوي</span>
-          <img src="../static/assests/card6.png" alt="أملو عضوي" />
-        </div>
-        <div class="product-content">
-          <h3>أملو عضوي</h3>
-          <p>أملو عضوي 100% من مكونات مزارع عضوية معتمدة</p>
-          <div class="product-footer">
-            <div class="product-info">
-              <span>250 غرام</span>
-              <strong>220 درهم</strong>
-            </div>
-            <a href="{{ url_for('order_5') }}" class="order-btn">اطلب الآن</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 6 -->
-      <div class="product-card" data-category="فاخر">
-        <div class="product-image">
-          <span class="tag">فاخر</span>
-          <img src="../static/assests/card5.png" alt="أملو ذهبي كبير" />
-        </div>
-        <div class="product-content">
-          <h3>أملو ذهبي كبير</h3>
-          <p>عبوة اقتصادية من أفخر أنواع الأملو التقليدي</p>
-          <div class="product-footer">
-            <div class="product-info">
-              <span>250 غرام</span>
-              <strong>300 درهم</strong>
-            </div>
-            <a href="{{ url_for('order_6') }}" class="order-btn">اطلب الآن</a>
-          </div>
-        </div>
+        <a href="{{ url_for('order_1') }}" class="order-btn">اطلب الآن</a>
       </div>
     </div>
   </div>
+
+  <!-- أملو بالتمر -->
+  <div class="product-card" data-category="طبيعي وطاقة">
+    <div class="product-image">
+      <span class="tag">طبيعي وطاقة</span>
+      <img src="../static/assets/order_2.png" alt="أملو بالتمر" />
+    </div>
+    <div class="product-content">
+      <h3>أملو بالتمر</h3>
+      <p>مزيج طبيعي 100% من التمر المجفف والكاوكاو والعسل وزيت الأركان، يمنحك طاقة وصحة طوال اليوم.</p>
+      <div class="product-footer">
+        <div class="product-info">
+          <span>500 غرام</span>
+          <strong>180 درهم</strong>
+        </div>
+        <a href="{{ url_for('order_2') }}" class="order-btn">اطلب الآن</a>
+      </div>
+    </div>
+  </div>
+
+
+   <!-- أملو بالشوكولاتة الداكنة -->
+  <div class="product-card" data-category="حلاوة ومتعة">
+    <div class="product-image">
+      <span class="tag">حلاوة ومتعة</span>
+      <img src="../static/assets/order_3.png" alt="أملو بالشوكولاتة الداكنة" />
+    </div>
+    <div class="product-content">
+      <h3>أملو بالشوكولاتة الداكنة</h3>
+      <p>مزيج غني بالكاكاو الطبيعي والكاوكاو والعسل، بديل صحي لمحبي الشوكولاتة.</p>
+      <div class="product-footer">
+        <div class="product-info">
+          <span>500 غرام</span>
+          <strong>190 درهم</strong>
+        </div>
+        <a href="{{ url_for('order_3') }}" class="order-btn">اطلب الآن</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- أملو بالبستاش -->
+  <div class="product-card" data-category="فاخر ومميز">
+    <div class="product-image">
+      <span class="tag">فاخر ومميز</span>
+      <img src="../static/assests/order_4.png" alt="أملو بالبستاش" />
+    </div>
+    <div class="product-content">
+      <h3>أملو بالبستاش</h3>
+      <p>
+        ذوق راقٍ مع نكهة فستق فاخرة ممزوجة بعسل طبيعي وزيت أركان، مخصص لعشاق المذاق المميز. 
+      </p>
+      <div class="product-footer">
+        <div class="product-info">
+          <span>500 غرام</span>
+          <strong>230 درهم</strong>
+        </div>
+        <a href="{{ url_for('order_4') }}" class="order-btn">اطلب الآن</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- أملو مكس فاخر -->
+  <div class="product-card" data-category="فاخر">
+    <div class="product-image">
+      <span class="tag">أملو ملكي فاخر</span>
+      <img src="../static/assets/order_5.png" alt="أملو مكس فاخر" />
+    </div>
+    <div class="product-content">
+      <h3>أملو ملكي فاخر</h3>
+      <p>التجربة الكاملة في جرة واحدة: فستق، شوكولاتة، تمر، جوز، عسل، زيت أركان وأكثر... لعشاق التنوع والمذاق الرفيع.</p>
+      <div class="product-footer">
+        <div class="product-info">
+          <span>500 غرام</span>
+          <strong>250 درهم</strong>
+        </div>
+        <a href="{{ url_for('order_5') }}" class="order-btn">اطلب الآن</a>
+      </div>
+    </div>
+  </div>
+
+</div>
 </section>
 
 

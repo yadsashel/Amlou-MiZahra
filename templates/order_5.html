@@ -39,23 +39,23 @@
       <div class="order-container">
         <div class="order-product">
           <h2>تفاصيل المنتج</h2>
-          <img src="../static/assests/card2.png" alt="أملو عضوي" />
-          <h3>أملو عضوي</h3>
-          <p>أملو عضوي 100% من مكونات مزارع عضوية معتمدة</p>
+          <img src="../static/assests/order_5.png" alt="أملو فاخر" />
+          <h3>أملو ملكي فاخر</h3>
+          <p>التجربة الكاملة في جرة واحدة: فستق، شوكولاتة، تمر، جوز، عسل، زيت أركان وأكثر... لعشاق التنوع والمذاق الرفيع.</p>
   
           <div class="order-meta">
-            <span>250 غرام</span>
-            <strong class="product-price">220 درهم</strong>
+            <span>500 غرام</span>
+            <strong class="product-price">250 درهم</strong>
           </div>
   
           <div class="order-summary">
             <h3>ملخص الطلب</h3>
-            <div><span>السعر:</span><span>220 درهم</span></div>
+            <div><span>السعر:</span><span>250 درهم</span></div>
             <div><span>الكمية:</span><span>1</span></div>
             <div class="total">
               <strong>الإجمالي:</strong>
               <div style="color: black; font-weight: bolder;"><br>الدفع عند التلقي</div>
-              <strong class="total-amount">220 درهم</strong>
+              <strong class="total-amount">250 درهم</strong>
             </div>
           </div>
         </div>
@@ -64,13 +64,13 @@
           <h2>معلومات الطلب</h2>
           <form method="POST" action="{{ url_for('submit_order', product_id=5) }}">
             <label for="customerName">الاسم الكامل*</label>
-            <input id="customerName" name="customerName" type="text" />
+            <input id="customerName" name="customerName" type="text" required />
   
             <label for="phone">رقم الهاتف*</label>
-            <input id="phone" name="phone" type="tel" />
+            <input id="phone" name="phone" type="tel" required />
   
             <label for="city">المدينة*</label>
-            <input id="city" name="city" type="text" />
+            <input id="city" name="city" type="text"  />
   
             <label for="address">العنوان التفصيلي*</label>
             <input id="address" name="address" type="text" />

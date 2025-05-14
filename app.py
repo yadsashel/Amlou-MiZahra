@@ -1,22 +1,34 @@
 import os
 import sys
 import csv, io
-from flask import Flask, render_template, flash, jsonify, request, session, redirect, url_for, send_file, make_response, abort
+import firebase_admin
+from firebase_admin import credentials, firestore
+from flask import Flask, render_template, flash, jsonify, request, session, redirect, url_for, send_file, make_response, abort, json
 from werkzeug.security import check_password_hash, generate_password_hash
 from dotenv import load_dotenv
 from functools import wraps
 from flask_cors import CORS
 
+# Load environment variables
 load_dotenv()
 
+# Get secret keys
 REGLOG_KEY = os.environ.get('REGLOG_KEY')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
+# Initialize Firebase Admin
+firebase_key = os.environ.get("FIREBASE_KEY")
+firebase_dict = json.loads(firebase_key)
+cred = credentials.Certificate(firebase_dict)
+firebase_admin.initialize_app(cred)
 
+# Get Firestore client
+db = firestore.client()
+
+# Initialize Flask app
 app = Flask(__name__)
-CORS(app)
-
 app.secret_key = SECRET_KEY
+CORS(app)
 
 @app.route('/')
 def home():
@@ -31,26 +43,26 @@ def register():
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
-        secret_code = request.form.get("secret_code", "").strip()  # Get the secret from the form
+        secret_code = request.form.get("secret_code", "").strip()
 
-        # Check if the secret is correct
         if secret_code != REGLOG_KEY:
             flash("رمز التسجيل غير صحيح. حاول مرة أخرى.", "error")
             return redirect(url_for("register"))
 
-        # Check if the user already exists
-        if os.path.exists('users.csv'):
-            with open('users.csv', "r", newline="", encoding="utf-8") as file:
-                reader = csv.reader(file)
-                for row in reader:
-                    if row and row[0] == username:
-                        flash("هذا المستخدم مسجل بالفعل.", "error")
-                        return redirect(url_for("register"))
+        # Check if user already exists in Firestore
+        user_ref = db.collection("users").document(username)
+        if user_ref.get().exists:
+            flash("هذا المستخدم مسجل بالفعل.", "error")
+            return redirect(url_for("register"))
 
-        # Register the new user
-        with open('users.csv', "a", newline="", encoding="utf-8") as file:
-            writer = csv.writer(file)
-            writer.writerow([username, password])  # Store only username and password
+        # Hash the password
+        hashed_password = generate_password_hash(password)
+
+        # Save to Firestore
+        user_ref.set({
+            "username": username,
+            "password": hashed_password
+        })
 
         flash("تم التسجيل بنجاح! يمكنك الآن تسجيل الدخول.", "success")
         return redirect(url_for("login"))
@@ -63,127 +75,93 @@ def login():
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
-        secret_code = request.form.get("secret", "").strip()  # Get the secret from the form
+        secret_code = request.form.get("secret", "").strip()
 
-        # Check if the secret is correct
         if secret_code != REGLOG_KEY:
             flash("رمز التسجيل غير صحيح. حاول مرة أخرى.", "error")
             return redirect(url_for("login"))
 
-        # Check if the user exists in the CSV file
-        if os.path.exists('users.csv'):
-            with open('users.csv', "r", newline="", encoding="utf-8") as file:
-                reader = csv.reader(file)
-                for row in reader:
-                    if row and row[0] == username and row[1] == password:
-                        session["username"] = username  # Create a session for the logged-in user
-                        flash("تم تسجيل الدخول بنجاح.", "success")
-                        return redirect(url_for("admin"))  # Redirect to the admin page
+        # Fetch user from Firestore
+        user_ref = db.collection("users").document(username)
+        user_doc = user_ref.get()
+
+        if user_doc.exists:
+            stored_password = user_doc.to_dict().get("password")
+            if check_password_hash(stored_password, password):
+                session["username"] = username
+                flash("تم تسجيل الدخول بنجاح.", "success")
+                return redirect(url_for("admin"))
 
         flash("بيانات الدخول غير صحيحة. حاول مرة أخرى.", "error")
         return redirect(url_for("login"))
 
     return render_template("login.html")
 
-
 # Decorator to check if the user is logged in
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if "username" not in session:
-            return abort(404)  # Show 404 page if not logged in
+            return abort(404)
         return f(*args, **kwargs)
     return decorated_function
-
 
 # Protect admin route
 @app.route("/admin")
 @login_required
 def admin():
-    orders = []
-    if os.path.exists("record.csv"):
-        with open("record.csv", "r", newline="", encoding="utf-8") as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if row:
-                    orders.append(row)
+    orders_ref = db.collection("orders")
+    orders_docs = orders_ref.stream()
+    orders = [doc.to_dict() for doc in orders_docs]
     return render_template("admin.html", orders=orders)
 
-
-
 @app.route('/update-order', methods=['POST'])
+@login_required
 def update_order():
     try:
-        index = int(request.form.get("row_index", -1))
-        if index < 0:
-            flash("رقم الطلب غير صالح", "error")
-            return redirect(url_for("admin"))
-
-        updated_row = [
-            request.form.get("customer_name", "").strip(),
-            request.form.get("phone", "").strip(),
-            request.form.get("city", "").strip(),
-            request.form.get("address", "").strip(),
-            request.form.get("quantity", "").strip(),
-            request.form.get("product", "").strip(),
-            request.form.get("total", "").strip()
-        ]
-
-        # Read all orders
-        with open("record.csv", "r", encoding="utf-8") as file:
-            lines = list(csv.reader(file))
-
-        if 0 <= index < len(lines):
-            lines[index] = updated_row  # Update the order
-        else:
-            flash("رقم الطلب غير موجود", "error")
-            return redirect(url_for("admin"))
-
-        # Write back updated data
-        with open("record.csv", "w", newline="", encoding="utf-8") as file:
-            writer = csv.writer(file)
-            writer.writerows(lines)
-
+        doc_id = request.form.get("doc_id")
+        updated_data = {
+            "name": request.form.get("customer_name", "").strip(),
+            "phone": request.form.get("phone", "").strip(),
+            "city": request.form.get("city", "").strip(),
+            "address": request.form.get("address", "").strip(),
+            "quantity": request.form.get("quantity", "").strip(),
+            "product": request.form.get("product", "").strip(),
+            "total": request.form.get("total", "").strip()
+        }
+        db.collection("orders").document(doc_id).update(updated_data)
         flash("✅ تم حفظ التغييرات بنجاح", "success")
-
     except Exception as e:
         print("Update error:", e)
         flash("❌ حدث خطأ أثناء تحديث الطلب", "error")
-
     return redirect(url_for("admin"))
 
-
 @app.route('/export_csv', methods=['POST'])
+@login_required
 def export_csv():
-    with open('record.csv', newline='', encoding='utf-8') as csvfile:
-        reader = csv.reader(csvfile)
-        rows = list(reader)
+    orders_ref = db.collection("orders")
+    orders = [doc.to_dict() for doc in orders_ref.stream()]
 
     headers = ['الاسم الكامل', 'رقم الهاتف', 'المدينة', 'العنوان', 'الكمية', 'المنتج', 'الإجمالي']
-
     si = io.StringIO()
     writer = csv.writer(si)
     writer.writerow(headers)
 
-    for row in rows:
-        # Force phone and total to be text using ="..."
-        clean_row = [
-            row[0],                            # Name
-            f'="{row[1]}"',                   # Phone as text
-            row[2],                            # City
-            row[3],                            # Address
-            row[4],                            # Quantity
-            row[5],                            # Product
-            f'="{row[6]}"'                    # Total (optional)
-        ]
-        writer.writerow(clean_row)
+    for order in orders:
+        writer.writerow([
+            order.get("name", ""),
+            f'="{order.get("phone", "")}"',
+            order.get("city", ""),
+            order.get("address", ""),
+            order.get("quantity", ""),
+            order.get("product", ""),
+            f'="{order.get("total", "")}"'
+        ])
 
-    output = make_response('\ufeff' + si.getvalue())  # Add BOM for Arabic
+    output = make_response('\ufeff' + si.getvalue())
     output.headers["Content-Disposition"] = "attachment; filename=orders.csv"
     output.headers["Content-type"] = "text/csv; charset=utf-8"
-
     return output
-
 
 @app.route('/submit_order/<int:product_id>', methods=['POST'])
 def submit_order(product_id):
@@ -191,11 +169,8 @@ def submit_order(product_id):
     phone = request.form.get("phone", "").strip()
     city = request.form.get("city", "").strip()
     address = request.form.get("address", "").strip()
-    quantity = request.form.get("quantity", "1").strip()
+    quantity = int(request.form.get("quantity", "1").strip())
 
-    # Optional: Add validation here
-
-    # Define product names and prices
     product_info = {
         1: ("أملو تقليدي", 120),
         2: ("أملو خاص", 150),
@@ -206,66 +181,47 @@ def submit_order(product_id):
     }
 
     product_name, unit_price = product_info.get(product_id, ("منتج غير معروف", 0))
-    total_price = unit_price * int(quantity)
+    total_price = unit_price * quantity
 
-    with open("record.csv", "a", newline="", encoding="utf-8") as file:
-        writer = csv.writer(file)
-        writer.writerow([name, phone, city, address, quantity, product_name, total_price])
+    db.collection("orders").add({
+        "name": name,
+        "phone": phone,
+        "city": city,
+        "address": address,
+        "quantity": quantity,
+        "product": product_name,
+        "total": total_price
+    })
 
     flash("✅ تم إرسال طلبك بنجاح، سنتواصل معك قريباً", "success")
     return redirect(url_for("product"))
 
-
-# Protect view-workers route
 @app.route('/view-workers')
 @login_required
 def view_workers():
-    workers = []
-    if os.path.exists('users.csv'):
-        with open('users.csv', newline='', encoding='utf-8') as f:
-            reader = csv.reader(f)
-            workers = list(reader)
+    workers_ref = db.collection("workers")
+    workers = [doc.to_dict() for doc in workers_ref.stream()]
     return render_template('view_workers.html', workers=workers)
 
-
-# Protect view-orders route
 @app.route('/view-orders')
 @login_required
 def view_orders():
-    orders = []
-    if os.path.exists('record.csv'):
-        with open('record.csv', newline='', encoding='utf-8') as f:
-            reader = csv.reader(f)
-            orders = list(reader)
+    orders_ref = db.collection("orders")
+    orders = [doc.to_dict() for doc in orders_ref.stream()]
     return render_template('view_orders.html', orders=orders)
 
-
-@app.route('/delete-worker/<int:index>')
+@app.route('/delete-worker/<worker_id>')
 @login_required
-def delete_worker(index):
-    if os.path.exists('users.csv'):
-        with open('users.csv', newline='', encoding='utf-8') as f:
-            rows = list(csv.reader(f))
-        if 0 <= index < len(rows):
-            del rows[index]
-            with open('users.csv', 'w', newline='', encoding='utf-8') as f:
-                writer = csv.writer(f)
-                writer.writerows(rows)
+def delete_worker(worker_id):
+    db.collection("workers").document(worker_id).delete()
     return redirect(url_for('view_workers'))
 
-
-@app.route('/delete-order/<int:index>')
+@app.route('/delete-order/<order_id>')
 @login_required
-def delete_order(index):
-    if os.path.exists('record.csv'):
-        with open('record.csv', newline='', encoding='utf-8') as f:
-            rows = list(csv.reader(f))
-        if 0 <= index < len(rows):
-            del rows[index]
-            with open('record.csv', 'w', newline='', encoding='utf-8') as f:
-                writer = csv.writer(f)
-                writer.writerows(rows)
+def delete_order(order_id):
+    db.collection("orders").document(order_id).delete()
     return redirect(url_for('view_orders'))
+
 
 @app.route('/order_1')
 def order_1():
@@ -286,10 +242,6 @@ def order_4():
 @app.route('/order_5')
 def order_5():
     return render_template('order_5.html')
-
-@app.route('/order_6')
-def order_6():
-    return render_template('order_6.html')
 
 @app.route('/ping')
 def ping():
