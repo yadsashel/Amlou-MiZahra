@@ -4,3 +4,4 @@ flask_cors
 gunicorn==20.1.0
 reportlab>=3.6.0
 python-dotenv
+firebase-admin
