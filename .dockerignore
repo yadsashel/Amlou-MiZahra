@@ -1,0 +1,4 @@
+# flyctl launch added from .gitignore
+**\.env
+**\FIREBASE_KEY.json
+fly.toml
