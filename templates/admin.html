@@ -73,14 +73,14 @@
   {% for order in orders %}
   <tr>
     <form method="POST" action="{{ url_for('update_order') }}">
-      <input type="hidden" name="row_index" value="{{ loop.index0 }}">
-      <td><input type="text" name="customer_name" value="{{ order[0] }}" required></td>
-      <td><input type="text" name="phone" value="{{ order[1] }}" required></td>
-      <td><input type="text" name="city" value="{{ order[2] }}"></td>
-      <td><input type="text" name="address" value="{{ order[3] }}"></td>
-      <td><input type="number" name="quantity" value="{{ order[4] }}"></td>
-      <td><input type="text" name="product" value="{{ order[5] }}"></td>
-      <td><input type="text" name="total" value="{{ order[6] }}"></td>
+      <input type="hidden" name="doc_id" value="{{ order.doc_id }}">
+      <td><input type="text" name="customer_name" value="{{ order.name }}" required></td>
+      <td><input type="text" name="phone" value="{{ order.phone }}" required></td>
+      <td><input type="text" name="city" value="{{ order.city }}"></td>
+      <td><input type="text" name="address" value="{{ order.address }}"></td>
+      <td><input type="number" name="quantity" value="{{ order.quantity }}"></td>
+      <td><input type="text" name="product" value="{{ order.product }}"></td>
+      <td><input type="text" name="total" value="{{ order.total }}"></td>
       <td><button type="submit" class="admin-btn">حفظ</button></td>
     </form>
   </tr>
@@ -113,7 +113,7 @@
       <div class="footer-column">
         <h3 class="footer-subtitle">تواصل معنا</h3>
         <ul class="footer-contact">
-          <li>+212682943119</li>
+          <li>الهاتف: 212682943119+</li>
           <li>البريد الإلكتروني: amloucontact@gmail.com</li>
           <li>العنوان: :قلعة السراغنة، المغرب</li>
         </ul>
@@ -127,5 +127,7 @@
 
 
 <script src="{{ url_for ('static', filename='scripts/scripts.js') }}"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js"></script>
 </body>
 </html>

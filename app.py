@@ -25,6 +25,7 @@ firebase_admin.initialize_app(cred)
 # Get Firestore client
 db = firestore.client()
 
+
 # Initialize Flask app
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
@@ -107,13 +108,19 @@ def login_required(f):
     return decorated_function
 
 # Protect admin route
-@app.route("/admin")
+@app.route('/admin')
 @login_required
 def admin():
-    orders_ref = db.collection("orders")
-    orders_docs = orders_ref.stream()
-    orders = [doc.to_dict() for doc in orders_docs]
+    orders_ref = db.collection("orders").stream()
+    orders = []
+
+    for doc in orders_ref:
+        order = doc.to_dict()
+        order["doc_id"] = doc.id  # ✅ Add document ID to each order
+        orders.append(order)
+
     return render_template("admin.html", orders=orders)
+
 
 @app.route('/update-order', methods=['POST'])
 @login_required
@@ -195,32 +202,6 @@ def submit_order(product_id):
 
     flash("✅ تم إرسال طلبك بنجاح، سنتواصل معك قريباً", "success")
     return redirect(url_for("product"))
-
-@app.route('/view-workers')
-@login_required
-def view_workers():
-    workers_ref = db.collection("workers")
-    workers = [doc.to_dict() for doc in workers_ref.stream()]
-    return render_template('view_workers.html', workers=workers)
-
-@app.route('/view-orders')
-@login_required
-def view_orders():
-    orders_ref = db.collection("orders")
-    orders = [doc.to_dict() for doc in orders_ref.stream()]
-    return render_template('view_orders.html', orders=orders)
-
-@app.route('/delete-worker/<worker_id>')
-@login_required
-def delete_worker(worker_id):
-    db.collection("workers").document(worker_id).delete()
-    return redirect(url_for('view_workers'))
-
-@app.route('/delete-order/<order_id>')
-@login_required
-def delete_order(order_id):
-    db.collection("orders").document(order_id).delete()
-    return redirect(url_for('view_orders'))
 
 
 @app.route('/order_1')

@@ -80,4 +80,3 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => msg.remove(), 500); // Remove after fade
     });
   }, 4000); // Show for 4 seconds
-
