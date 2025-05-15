@@ -1,108 +1,0 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&amp;family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for ('static', filename='css/styles.css') }}">
-    <link rel="icon" href="../static/assests/logo.png">
-    <title>عرض جميع الطلبات</title>
-</head>
-<body>
-
-  <!-- header and navbar -->
-  <header>
-    <div class="container">
-      <div class="mainlogo"><a  class="logo" href="{{ url_for ('home') }}">أملو مي زهرة</a></div>
-      <nav>
-        <div class="menu-toggle" id="menu-toggle">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </div>
-        <ul class="nav-links" id="nav-links">
-          <li><a href="{{ url_for ('home') }}">الرئيسية</a></li>
-          <li><a href="{{ url_for ('product') }}">منتجاتنا</a></li>
-          <li><a class="now" href="{{ url_for ('product') }}">اطلب الآن</a></li>
-        </ul>
-      </nav>
-    </div>
-</header>
-  
-
-<!-- Flash Messages -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <div class="flash-messages">
-            {% for category, message in messages %}
-                <div class="flash-message {{ category }}">
-                    <p>{{ message }}</p>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-{% endwith %}
-
-
-<section class="orders-section">
-  <h2 class="vws">📦 الطلبات</h2>
-  <div class="orders-table-wrapper">
-    <table class="styled-table">
-      <thead>
-        <tr>
-          <th>البيانات</th>
-          <th>حذف</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in orders %}
-        <tr>
-          <td>{{ row }}</td>
-          <td><a href="{{ url_for('delete_order', index=loop.index0) }}" class="delete-btn">🗑️</a></td>
-        </tr>
-        {% else %}
-        <tr>
-          <td colspan="2">لا توجد طلبات حالياً.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</section>
-
-
-      
-<!-- footer -->
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-grid">
-      <div class="footer-column">
-        <h3 class="footer-title">أملو مي زهرة</h3>
-        <p class="footer-text">
-          نقدم لكم أجود أنواع الأملو المغربي التقليدي، المصنوع بحرفية وبمكونات طبيعية 100% من أجود أنواع زيت الأركان واللوز.
-        </p>
-      </div>
-      <div class="footer-column">
-        <h3 class="footer-subtitle">روابط سريعة</h3>
-        <ul class="footer-links">
-          <li><a href="/">الرئيسية</a></li>
-          <li><a href="{{ url_for ('product') }}">منتجاتنا</a></li>
-          <li><a href="#about">من نحن</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h3 class="footer-subtitle">تواصل معنا</h3>
-        <ul class="footer-contact">
-          <li>الهاتف: 212682943119+</li>
-          <li>البريد الإلكتروني: amloucontact@gmail.com</li>
-          <li>العنوان: :قلعة السراغنة، المغرب</li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2025 أملو مي زهرة - جميع الحقوق محفوظة</p>
-    </div>
-  </div>
-</footer>
-</body>
-</html>

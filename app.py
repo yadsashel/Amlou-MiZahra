@@ -8,6 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from dotenv import load_dotenv
 from functools import wraps
 from flask_cors import CORS
+from datetime import datetime, timedelta
 
 # Load environment variables
 load_dotenv()
@@ -29,6 +30,7 @@ db = firestore.client()
 # Initialize Flask app
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
+app.permanent_session_lifetime = timedelta(days=7)
 CORS(app)
 
 @app.route('/')
@@ -89,6 +91,7 @@ def login():
         if user_doc.exists:
             stored_password = user_doc.to_dict().get("password")
             if check_password_hash(stored_password, password):
+                session.permanent = True
                 session["username"] = username
                 flash("تم تسجيل الدخول بنجاح.", "success")
                 return redirect(url_for("admin"))
@@ -119,7 +122,7 @@ def admin():
         order["doc_id"] = doc.id  # ✅ Add document ID to each order
         orders.append(order)
 
-    return render_template("admin.html", orders=orders)
+    return render_template("admin.html", orders=orders, username=session["username"])
 
 
 @app.route('/update-order', methods=['POST'])
@@ -179,12 +182,11 @@ def submit_order(product_id):
     quantity = int(request.form.get("quantity", "1").strip())
 
     product_info = {
-        1: ("أملو تقليدي", 120),
-        2: ("أملو خاص", 150),
-        3: ("أملو بزيت الزيتون", 180),
-        4: ("أملو بالعسل الحر", 200),
-        5: ("أملو ممتاز", 220),
-        6: ("أملو بريميوم", 250)
+        1: ("أملو سبايسي بالأعشاب", 170),
+        2: ("أملو بالتمر", 180),
+        3: ("أملو أملو بالشوكولاتة الداكنة ", 190),
+        4: ("أملو بالبستاش", 230),
+        5: ("أملو ملكي فاخر", 250),
     }
 
     product_name, unit_price = product_info.get(product_id, ("منتج غير معروف", 0))
